@@ -1,0 +1,168 @@
+# =============================================================================
+# REQUIREMENTS — Prof. Bimal Kumar Mishra Portfolio
+# =============================================================================
+# This is a pure frontend (HTML + CSS + Vanilla JavaScript) project.
+# There are NO Python, backend, or database dependencies.
+#
+# NPM dependencies are tracked in package.json and package-lock.json.
+# This file documents ALL requirements for the project to build and run.
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 1: SYSTEM REQUIREMENTS (Runtime Environment)
+# =============================================================================
+
+# Node.js (JavaScript runtime — required to run Vite build tool)
+# Install from: https://nodejs.org/en/download (LTS recommended)
+node >= 18.0.0
+
+# npm (Node Package Manager — bundled with Node.js)
+npm >= 9.0.0
+
+# Operating System: macOS 12+, Windows 10+, Ubuntu 20.04+, or any Linux
+# Architecture: x86_64 (Intel/AMD) or arm64 (Apple Silicon M-series)
+
+
+# =============================================================================
+# SECTION 2: NODE.JS / NPM DEPENDENCIES (package.json)
+# =============================================================================
+# Install with: npm install
+# Lock file: package-lock.json (exact versions pinned)
+
+# ── devDependencies ──────────────────────────────────────────────────────────
+
+vite==^6.3.5
+# Build tool and development server
+# Source: https://www.npmjs.com/package/vite
+# License: MIT
+# Purpose: Fast ESM-native bundler, Hot Module Replacement (HMR), production
+#          optimisation via Rollup. The only npm dependency in this project.
+
+
+# =============================================================================
+# SECTION 3: BROWSER REQUIREMENTS
+# =============================================================================
+# No installation needed — these are the minimum browser versions that support
+# all browser APIs used in this project.
+
+# Required Browser APIs:
+#   - ES Modules (import/export)          → Chrome 61+, Firefox 60+, Safari 10.1+
+#   - HTML5 Canvas API (2D context)       → All modern browsers
+#   - IntersectionObserver               → Chrome 51+, Firefox 55+, Safari 12.1+
+#   - CSS Custom Properties               → Chrome 49+, Firefox 31+, Safari 9.1+
+#   - CSS backdrop-filter                 → Chrome 76+, Firefox 103+, Safari 9+
+#   - CSS aspect-ratio                    → Chrome 88+, Firefox 89+, Safari 15+
+#   - Clipboard API (navigator.clipboard) → Chrome 66+, Firefox 63+, Safari 13.1+
+#   - requestAnimationFrame               → All modern browsers
+#   - window.devicePixelRatio             → All modern browsers
+#   - CSS Grid + Flexbox                  → All modern browsers
+#   - IntersectionObserver               → Chrome 51+, Firefox 55+, Safari 12.1+
+
+# Minimum Supported Browsers:
+google-chrome >= 90
+mozilla-firefox >= 88
+apple-safari >= 15
+microsoft-edge >= 90
+samsung-internet >= 14
+opera >= 76
+
+
+# =============================================================================
+# SECTION 4: EXTERNAL RUNTIME RESOURCES (CDN / Network)
+# =============================================================================
+# These are loaded at runtime from external servers. An internet connection
+# is required for these to load in the browser.
+
+# Google Fonts (loaded via CSS @import in src/style.css)
+# URL: https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900
+#      &family=JetBrains+Mono:wght@400;500;600;700
+#      &family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap
+google-fonts/inter >= 3.19
+google-fonts/jetbrains-mono >= 2.304
+google-fonts/playfair-display >= 1.202
+
+# Note: Fonts are loaded from Google's CDN. If offline use is required,
+# download the fonts and serve them via public/assets/fonts/ with @font-face rules.
+
+
+# =============================================================================
+# SECTION 5: DEVELOPMENT TOOLS (Optional / Recommended)
+# =============================================================================
+# These are NOT required to build or run the project, but are recommended
+# for development and code quality.
+
+# Code Editor
+# Visual Studio Code >= 1.85  →  https://code.visualstudio.com
+# Cursor >= 0.40              →  https://cursor.sh
+
+# Recommended VS Code Extensions:
+# - ESLint (dbaeumer.vscode-eslint)
+# - Prettier (esbenp.prettier-vscode)
+# - CSS Var Complete (phoenisx.cssvar)
+# - Path IntelliSense (christian-kohler.path-intellisense)
+
+# Git (for version control)
+# git >= 2.40  →  https://git-scm.com
+
+
+# =============================================================================
+# SECTION 6: DEPLOYMENT REQUIREMENTS
+# =============================================================================
+# For deploying the production build (dist/ folder) to a live server:
+
+# Option A: Netlify CLI (recommended)
+# npm install -g netlify-cli
+# netlify deploy --prod --dir=dist
+netlify-cli >= 17.0.0  # optional
+
+# Option B: Vercel CLI
+# npm install -g vercel
+# vercel --prod
+vercel >= 36.0.0  # optional
+
+# Option C: GitHub Pages helper
+# npm install --save-dev gh-pages
+gh-pages >= 6.0.0  # optional
+
+# Option D: Any static web server
+# The dist/ output is plain HTML + CSS + JS. No server-side runtime required.
+# Compatible with: Apache, Nginx, AWS S3, Cloudflare Pages, Firebase Hosting
+
+
+# =============================================================================
+# SECTION 7: CANVAS / MATH MODULE CAPABILITIES
+# =============================================================================
+# No external math libraries required. The following are implemented natively:
+
+# Math Background Canvas
+#   - HTML5 Canvas 2D API
+#   - requestAnimationFrame loop
+#   - Particle system (~80–120 nodes)
+#   - Mouse event: mousemove, mouseleave
+
+# SEIQRS Epidemic Simulator
+#   - Custom 4th-order Runge-Kutta ODE solver (pure JavaScript, 500 time steps)
+#   - HTML5 Canvas 2D API for real-time chart rendering
+#   - No: D3.js, Chart.js, Plotly, or any external chart library
+
+# PhD Constellation Graph
+#   - HTML5 Canvas 2D API
+#   - Orbital animation via sine/cosine functions
+#   - Hover detection via Euclidean distance check
+#   - No: Three.js, D3-force, Cytoscape.js
+
+# =============================================================================
+# END OF REQUIREMENTS
+# =============================================================================
+#
+# Quick Start:
+#   1. Ensure Node.js >= 18 is installed: node --version
+#   2. Install dependencies:             npm install
+#   3. Start dev server:                 npm run dev
+#   4. Build for production:             npm run build
+#   5. Preview production build:         npm run preview
+#
+# Dev server:     http://localhost:5173
+# Network access: http://192.168.x.x:5173 (shown in terminal on startup)
+# =============================================================================
