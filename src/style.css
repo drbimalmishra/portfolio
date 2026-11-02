@@ -3,8 +3,7 @@
    Design System & Master Stylesheet
    ========================================= */
 
-/* === GOOGLE FONTS === */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap');
+/* === GOOGLE FONTS === loaded non-blocking from index.html */
 
 /* === CSS CUSTOM PROPERTIES (DESIGN TOKENS) === */
 :root {
@@ -337,6 +336,12 @@ button {
 .hero-avatar-wrapper:hover .hero-avatar-border {
   transform: scale(1.04);
   box-shadow: 0 14px 40px rgba(0, 242, 254, 0.4), 0 0 25px rgba(245, 158, 11, 0.3);
+}
+
+.hero-avatar-border picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-avatar-img {
@@ -737,10 +742,14 @@ button {
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--slate-700);
+  height: 24px; /* 24px touch target; the visible track stays 6px */
+  background: linear-gradient(var(--slate-700), var(--slate-700)) center / 100% 6px no-repeat;
   outline: none;
+}
+
+input[type="range"]:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -1379,6 +1388,7 @@ input[type="range"]::-webkit-slider-thumb {
 .copy-btn {
   font-family: var(--font-mono);
   font-size: 0.7rem;
+  min-height: 24px;
   padding: 0.2rem 0.5rem;
   background: var(--neon-cyan-dim);
   color: var(--neon-cyan);
@@ -1406,7 +1416,7 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 3rem var(--container-padding);
   border-top: 1px solid var(--glass-border);
   font-size: 0.85rem;
-  color: var(--slate-500);
+  color: var(--slate-400);
 }
 
 .footer a {
@@ -1420,9 +1430,9 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* === ANIMATIONS === */
+/* Hero entrance: motion only, no opacity — invisible text delays first paint and LCP */
 @keyframes fadeInUp {
   from {
-    opacity: 0;
     transform: translateY(30px);
   }
   to {
@@ -1433,7 +1443,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 @keyframes fadeInDown {
   from {
-    opacity: 0;
     transform: translateY(-20px);
   }
   to {
@@ -1470,12 +1479,16 @@ input[type="range"]::-webkit-slider-thumb {
   justify-content: center;
   padding: 2rem;
   opacity: 0;
+  visibility: hidden; /* closed overlays must not be keyboard-focusable */
   pointer-events: none;
-  transition: opacity var(--transition-medium);
+  /* hide only after the fade-out; show instantly so focus() works on open */
+  transition: opacity var(--transition-medium), visibility 0s linear 0.4s;
 }
 
 .modal-overlay.active {
   opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
   pointer-events: all;
 }
 
@@ -1658,12 +1671,16 @@ input[type="range"]::-webkit-slider-thumb {
   gap: 1.5rem;
   padding: 4rem 0 2rem;
   opacity: 0;
+  visibility: hidden; /* closed overlays must not be keyboard-focusable */
   pointer-events: none;
-  transition: opacity var(--transition-medium);
+  /* hide only after the fade-out; show instantly so focus() works on open */
+  transition: opacity var(--transition-medium), visibility 0s linear 0.4s;
 }
 
 .mobile-nav-overlay.active {
   opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
   pointer-events: all;
 }
 
@@ -1708,4 +1725,17 @@ input[type="range"]::-webkit-slider-thumb {
 
 .glow-border {
   animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

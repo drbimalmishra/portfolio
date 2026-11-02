@@ -132,13 +132,23 @@ export function initMathBackground(canvasId) {
     }
   }
 
-  let rafId;
   function animate() {
     ctx.clearRect(0, 0, W, H);
     drawParticles();
     drawEquations();
-    rafId = requestAnimationFrame(animate);
+    if (onScreen) rafId = requestAnimationFrame(animate);
   }
+
+  // Only animate while the hero is visible
+  let onScreen = true, rafId;
+  new IntersectionObserver(([entry]) => {
+    const wasOn = onScreen;
+    onScreen = entry.isIntersecting;
+    if (onScreen && !wasOn) {
+      cancelAnimationFrame(rafId); // never run two loops
+      rafId = requestAnimationFrame(animate);
+    }
+  }).observe(canvas);
 
   // Debounced resize
   let resizeTimer;

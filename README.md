@@ -55,6 +55,8 @@ A **single-page, ultra-interactive academic portfolio** showcasing Prof. Mishra'
 - 🥋 **Renaissance Polymath Section** — karate, cinema, drama, literature
 - 📰 **Press & Media Room** — verified Times of India, Live Hindustan coverage
 - 📬 **Terminal Contact Portal** — macOS-style terminal with copy-to-clipboard
+- 🔎 **SEO-ready** — canonical URL, `sitemap.xml`, Open Graph / X cards with a 1200×630 preview image, Schema.org JSON-LD (`Person`, `ProfilePage`, `WebSite`)
+- ⚡ **Fast & accessible** — Lighthouse 100/100/100 on mobile and desktop (local production build), WebP hero image, non-blocking fonts, keyboard-friendly menus and pop-ups, `prefers-reduced-motion` support
 
 ---
 
@@ -67,7 +69,7 @@ A **single-page, ultra-interactive academic portfolio** showcasing Prof. Mishra'
 | **Logic** | Vanilla JavaScript (ES2022) | Zero runtime overhead, maximum browser compat |
 | **Styling** | Vanilla CSS (Custom Properties) | Design tokens, glassmorphism, `backdrop-filter` |
 | **Animation** | HTML5 Canvas API | Particle field, ODE simulator, constellation graph |
-| **Typography** | Google Fonts (Inter + JetBrains Mono + Playfair Display) | Via CSS `@import` |
+| **Typography** | Google Fonts (Inter + JetBrains Mono + Playfair Display) | Non-blocking `<link rel="preload">` in `index.html` |
 | **Math** | Custom 4th-order Runge-Kutta solver | Pure JS, no external dependency |
 
 > **Zero runtime dependencies** — the only `devDependency` is Vite (build tool). Everything else is browser-native.
@@ -85,9 +87,11 @@ portfolio/
 ├── package-lock.json             # Dependency lock file
 │
 ├── public/
+│   ├── sitemap.xml               # SEO: submit in Google Search Console (update <lastmod> on big changes)
+│   ├── og-image.jpg              # 1200×630 link-preview image (WhatsApp, LinkedIn, X)
 │   └── assets/
 │       └── images/
-│           ├── profile/          # → Drop profile photos here
+│           ├── profile/          # Profile.jpeg (original) + profile-340.webp/.jpg (served in the hero)
 │           ├── books/            # → Drop book cover images here
 │           ├── patents/          # → Drop patent document scans here
 │           ├── creative/         # → Drop karate/film/drama images here
@@ -314,13 +318,15 @@ Append to the `patents` array in [`src/data/patents.js`](src/data/patents.js):
 
 ### Adding Profile Photos
 
-Drop images into `public/assets/images/profile/`. Then reference them in `index.html` or `main.js` using:
+The hero shows `profile-340.webp` (with `profile-340.jpg` as fallback) inside a `<picture>` in `index.html`. To replace the photo, keep the original as `Profile.jpeg` and regenerate the small versions (macOS; `cwebp` comes from `brew install webp`):
 
-```html
-<img src="/assets/images/profile/your-photo.jpg" alt="Prof. Bimal Kumar Mishra" />
+```bash
+cd public/assets/images/profile
+sips -Z 340 Profile.jpeg --out profile-340.jpg -s formatOptions 82
+cwebp -q 80 profile-340.jpg -o profile-340.webp
 ```
 
-Photos placed in `public/` are served at the root URL path automatically.
+Photos placed in `public/` are served at the site root automatically. If the face changes, also regenerate `public/og-image.jpg` (the 1200×630 link-preview card).
 
 ### Changing the Color Theme
 
@@ -338,7 +344,13 @@ Edit the CSS variables in [`src/style.css`](src/style.css) under `:root {}`:
 
 ## 🚢 Deployment
 
-### Netlify (Recommended)
+### GitHub Pages (current setup)
+
+The live site is **https://drbimalmishra.github.io/portfolio/**. Every push to `main` runs `.github/workflows/deploy.yml`, which builds with Vite and publishes `dist/`; the site updates within a few minutes. Files in `public/` (`sitemap.xml`, `og-image.jpg`, images) are copied into the build unchanged.
+
+If the site ever moves to another host or a custom domain, update the canonical URL, `og:url`, `og:image`, `twitter:image` and the JSON-LD `url`/`@id` values in `index.html`, plus `<loc>` in `public/sitemap.xml`.
+
+### Netlify (alternative)
 
 ```bash
 # Build the project
@@ -355,18 +367,6 @@ npx netlify-cli deploy --prod --dir=dist
 npm i -g vercel
 vercel --prod
 # Vite is auto-detected, no config needed
-```
-
-### GitHub Pages
-
-```bash
-# Install gh-pages helper
-npm install --save-dev gh-pages
-
-# Add to package.json scripts:
-# "deploy": "npm run build && gh-pages -d dist"
-
-npm run deploy
 ```
 
 ### Cloudflare Pages
@@ -405,11 +405,13 @@ npm run build
 
 | Breakpoint | Target | Layout |
 |---|---|---|
-| `< 480px` | Phones (iPhone SE, etc.) | Single column, stacked hero links |
-| `480–768px` | Large phones / small tablets | Single column, compact metrics |
-| `768–1024px` | Tablets (iPad) | 2-column simulator, hamburger nav |
-| `1024–1440px` | Laptops | Full desktop layout |
-| `> 1440px` | 4K / ultrawide | Max-width container, centred |
+| `≤ 480px` | Phones (iPhone SE, etc.) | Stacked hero links, single-column cards |
+| `≤ 768px` | Large phones / small tablets | Single-column grids, compact metrics, square PhD graph |
+| `≤ 1024px` | Tablets (iPad) | Hamburger menu, single-column simulator |
+| `≤ 1280px` | Small laptops | Full nav; citation pill hidden |
+| `> 1280px` | Laptops / desktops | Full layout with citation pill, max-width container |
+
+Tested with no horizontal scrolling at 320, 375, 390, 430, 768, 1024, 1280 and 1440px.
 
 ---
 
@@ -418,7 +420,7 @@ npm run build
 ### Why Vanilla JS + Vite (no React/Next.js)?
 
 1. **Zero runtime overhead** — no Virtual DOM, no hydration cost, no framework bundle
-2. **95+ Lighthouse score** — 56KB JS (gzip: 17KB) loads in milliseconds
+2. **Lighthouse 100** — performance, accessibility and best practices on mobile and desktop (see SEO & Performance below)
 3. **Canvas control** — direct Canvas API access without Three.js abstraction layers
 4. **Long-term maintainability** — no framework version churn
 5. **Data portability** — all 7 data files are pure ES modules, import into any future framework
@@ -440,13 +442,37 @@ Each data file exports a plain JS object/array — completely decoupled from ren
 
 ---
 
+## 🔎 SEO & Performance
+
+| What | Where |
+|---|---|
+| Title, description, canonical, `robots` meta | `<head>` of `index.html` |
+| Open Graph / X (Twitter) cards | `<head>` of `index.html`; image: `public/og-image.jpg` (1200×630) |
+| Structured data (`WebSite`, `ProfilePage`, `Person`) | `<script type="application/ld+json">` in `index.html` |
+| Sitemap | `public/sitemap.xml` → submit in Google Search Console |
+
+**When numbers change** (citations, patents, papers): update `src/data/scholarData.js` (the page reads it) **and** the two `description` meta tags in `index.html`, and regenerate `og-image.jpg` if it shows the old figures. After a significant content update, set `<lastmod>` in `sitemap.xml` to today's date.
+
+**Performance choices to keep:** hero text animates position only (never `opacity: 0`, which delays first paint); canvas animations pause when off-screen; fonts load without blocking; the hero image is the 340px WebP, not the full-size original.
+
+**Lighthouse 12.6** (local production build, median of 3 runs, Nov 2026):
+
+| | Performance | Accessibility | Best Practices | LCP | CLS |
+|---|---|---|---|---|---|
+| Mobile | 100 | 100 | 100 | 1.41 s | 0.021 |
+| Desktop | 100 | 100 | 100 | 0.42 s | 0.044 |
+
+---
+
 ## 🐛 Known Limitations
 
 | Limitation | Workaround |
 |---|---|
 | Canvas `backdrop-filter` not supported in Firefox for `<canvas>` elements | Canvas uses opaque `#0B1120` background instead |
 | Clipboard API requires HTTPS in production | Works on `localhost` and any HTTPS host |
-| Google Fonts require internet connection | Add a CSS `@font-face` fallback for offline use |
+| Google Fonts require internet connection | System-font fallbacks in `--font-*` are shown until fonts load |
+| `robots.txt` is only read at the domain root (`drbimalmishra.github.io/robots.txt`), which belongs to a separate `drbimalmishra.github.io` repo | Not required — without it Google crawls everything; the sitemap is submitted via Search Console instead |
+| GitHub Pages caches files for 10 minutes and the cache time can't be changed | Vite fingerprints JS/CSS file names, so new deploys are picked up immediately |
 | Publication list shows the 115 Scholar papers by Prof. Mishra (the Scholar profile also auto-attaches papers by other "B. Mishra" authors) | Add papers to `src/data/publications.js` |
 
 ---

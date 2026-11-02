@@ -215,8 +215,19 @@ export function initConstellation(canvasId, scholars) {
       ctx.fillText(`${n.domain} • ${n.year}`, tx + 12, ty + th - 12);
     }
 
-    requestAnimationFrame(draw);
+    if (onScreen) rafId = requestAnimationFrame(draw);
   }
+
+  // Only animate while the graph is visible; an off-screen loop just burns CPU on phones
+  let onScreen = true, rafId;
+  new IntersectionObserver(([entry]) => {
+    const wasOn = onScreen;
+    onScreen = entry.isIntersecting;
+    if (onScreen && !wasOn) {
+      cancelAnimationFrame(rafId); // never run two loops
+      rafId = requestAnimationFrame(draw);
+    }
+  }).observe(canvas);
 
   // Greedy word-wrap using the current ctx.font
   function wrapText(text, maxWidth) {

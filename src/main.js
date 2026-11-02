@@ -74,6 +74,7 @@ function initNavigation() {
     mobileNav.classList.add('active');
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    mobileClose.focus();
   });
 
   // Close mobile nav
@@ -82,6 +83,7 @@ function initNavigation() {
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
+  mobileClose.addEventListener('click', () => hamburger.focus());
 
   mobileClose.addEventListener('click', closeMobileNav);
   mobileLinks.forEach(link => link.addEventListener('click', closeMobileNav));
@@ -297,7 +299,7 @@ function buildPublications() {
     count.textContent = `Showing ${filtered.length} of ${publications.length} papers listed on Google Scholar`;
 
     list.innerHTML = filtered.length ? filtered.map(p => `
-      <div class="pub-item">
+      <div class="pub-item" role="listitem">
         <span class="pub-year">${p.year || '—'}</span>
         <div class="pub-info">
           <div class="pub-title">${p.title}</div>
