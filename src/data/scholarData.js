@@ -7,8 +7,8 @@ export const scholarData = {
     citations: 4580,
     hIndex: 32,
     i10Index: 82,
-    publications: 135,
-    patents: 15, // total patents; the patents section details the 7 granted ones
+    publications: 100,
+    patents: 15,
     phdsSupervised: 23,
     books: 5,
   },

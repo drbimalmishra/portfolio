@@ -31,8 +31,8 @@
 | **Education** | B.Sc. (Hons.) Mathematics (Ranchi University, 1988) · M.Sc. Operational Research (University of Delhi, 1993) · M.Sc. Mathematics (VBU, 1995) · Ph.D. (VBU, 1997) · D.Sc. (Berhampur University, 2007) |
 | **Fellowships** | FRAS — Fellow, Royal Astronomical Society, London · FIMA — Fellow, IMA, UK |
 | **Citations** | 4,580+ (Google Scholar, Nov 2026) · h-index: 32 · i10-index: 82 |
-| **Publications** | 135+ peer-reviewed papers (Elsevier, Springer, IEEE, Nature group) |
-| **Patents** | 15 patents in total; 7 granted patents detailed on the site — India 🇮🇳, Australia 🇦🇺 (×4), South Africa 🇿🇦, Germany 🇩🇪 |
+| **Publications** | 100+ peer-reviewed papers (Elsevier, Springer, IEEE, Nature group) |
+| **Patents** | 15 granted patents — India 🇮🇳, Australia 🇦🇺 (×4), South Africa 🇿🇦, Germany 🇩🇪 |
 | **PhD Scholars** | 23 awarded doctoral scholars |
 | **Books** | 5 authored/edited, including *Zero Before the Symbol* (BlueRose, 2026) |
 | **Creative** | State Karate Champion · Film Director · Playwright (30+ plays) · Poet |
@@ -106,7 +106,7 @@ Dad Portfolio/
 │   └── data/
 │       ├── scholarData.js        # Scholar metrics, citation data, top papers
 │       ├── patents.js            # 7 verified patents with full details
-│       ├── publications.js       # 45+ representative papers (of 135+ total)
+│       ├── publications.js       # 115 papers from Google Scholar
 │       ├── books.js              # 5 books with ISBNs and descriptions
 │       ├── phds.js               # 23 PhD scholars with thesis titles
 │       ├── mediaArticles.js      # Press coverage + awards/fellowships
@@ -268,7 +268,7 @@ metrics: {
   citations: 4580,   // ← Update this
   hIndex: 32,        // ← Update this
   i10Index: 82,      // ← Update this
-  publications: 135, // ← Update this
+  publications: 100, // ← Update this
   patents: 15,
   phdsSupervised: 23,
   books: 5,

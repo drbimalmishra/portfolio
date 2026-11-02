@@ -138,7 +138,7 @@ function animateCounter(el, target) {
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = Math.floor(eased * target);
-    el.textContent = current.toLocaleString('en-US') + (target > 100 ? '+' : '');
+    el.textContent = current.toLocaleString('en-US') + (target >= 100 ? '+' : '');
     if (progress < 1) requestAnimationFrame(update);
   }
 
