@@ -77,7 +77,7 @@ A **single-page, ultra-interactive academic portfolio** showcasing Prof. Mishra'
 ## 📁 Project Structure
 
 ```
-Dad Portfolio/
+portfolio/
 │
 ├── index.html                    # Entry point — 11 semantic sections
 ├── vite.config.js                # Vite bundler configuration
@@ -474,7 +474,7 @@ This project is **private and proprietary**. All content, data, and design belon
 
 <div align="center">
 
-Built with ∑ and ∂ · © 2026 Prof. (Dr.) Bimal Kumar Mishra · All Rights Reserved
+Built by Prafful Mishra - All rights reserved
 
 **[↑ Back to Top](#)**
 
