@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prof. (Dr.) Bimal Kumar Mishra — Mathematician, Cyber-Epidemiologist, Renaissance Polymath</title>
-  <meta name="description" content="Academic portfolio of Prof. (Dr.) Bimal Kumar Mishra — Ph.D., D.Sc., FRAS (London), FIMA (UK). 3,324+ citations, 135+ publications, 7 global patents, 23 PhD scholars. Principal, Ramgarh College (VBU)." />
+  <meta name="description" content="Academic portfolio of Prof. (Dr.) Bimal Kumar Mishra — Ph.D., D.Sc., FRAS (London), FIMA (UK). 4,580+ citations, 135+ publications, 15 patents, 23 PhD scholars. Principal, Ramgarh College (VBU)." />
   <meta name="keywords" content="Bimal Kumar Mishra, mathematician, cybersecurity, epidemic modeling, BIT Mesra, VBU, FRAS, FIMA, patents, academic portfolio" />
   <meta property="og:title" content="Prof. (Dr.) Bimal Kumar Mishra — Academic Portfolio" />
-  <meta property="og:description" content="Mathematician, Cyber-Epidemiologist, and Renaissance Polymath. 3,324+ citations, 135+ publications, 7 global patents." />
+  <meta property="og:description" content="Mathematician, Cyber-Epidemiologist, and Renaissance Polymath. 4,580+ citations, 135+ publications, 15 patents." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/images/profile/Profile.jpeg" />
+  <meta property="og:image" content="https://drbimalmishra.github.io/portfolio/assets/images/profile/Profile.jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="/assets/images/profile/Profile.jpeg" />
+  <meta name="twitter:image" content="https://drbimalmishra.github.io/portfolio/assets/images/profile/Profile.jpeg" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>∑</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,9 +37,9 @@
       </ul>
       <div class="nav-ticker" id="nav-ticker" aria-label="Citation counter">
         <span aria-hidden="true">📊</span>
-        <span>3,324+ citations</span>
+        <span id="nav-citations"></span>
       </div>
-      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -47,7 +47,7 @@
 
   <!-- Mobile Nav Overlay -->
   <div class="mobile-nav-overlay" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-    <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close navigation">✕</button>
+    <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="Close navigation">✕</button>
     <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#simulator">Lab</a>
@@ -99,33 +99,33 @@
 
       <div class="hero-metrics" id="hero-metrics" aria-label="Key academic metrics">
         <div class="metric-badge">
-          <span class="metric-value" data-target="3324" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="citations" aria-live="polite">0</span>
           <span class="metric-label">Citations</span>
         </div>
         <div class="metric-badge">
-          <span class="metric-value" data-target="135" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="publications" aria-live="polite">0</span>
           <span class="metric-label">Publications</span>
         </div>
         <div class="metric-badge">
-          <span class="metric-value" data-target="7" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="patents" aria-live="polite">0</span>
           <span class="metric-label">Global Patents</span>
         </div>
         <div class="metric-badge">
-          <span class="metric-value" data-target="23" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="phdsSupervised" aria-live="polite">0</span>
           <span class="metric-label">PhDs Mentored</span>
         </div>
         <div class="metric-badge">
-          <span class="metric-value" data-target="26" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="hIndex" aria-live="polite">0</span>
           <span class="metric-label">h-index</span>
         </div>
         <div class="metric-badge">
-          <span class="metric-value" data-target="63" aria-live="polite">0</span>
+          <span class="metric-value" data-metric="i10Index" aria-live="polite">0</span>
           <span class="metric-label">i10-index</span>
         </div>
       </div>
 
       <nav class="hero-links" aria-label="Academic profiles">
-        <a href="https://scholar.google.com/citations?user=Y4hJ_dAAAAAJ" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-scholar">
+        <a href="https://scholar.google.com/citations?user=6lukGLYAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-scholar">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
           Google Scholar
         </a>
@@ -133,20 +133,17 @@
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-1.834-1.209-3.722-3.853-3.722h-2.466z"/></svg>
           ORCID
         </a>
-        <a href="https://dblp.org/pid/50/5053" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-dblp">
+        <a href="https://dblp.org/pid/84/1408.html" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-dblp">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.075.002c-.096.013-.1.026-.172.11L.478 4.08a.27.27 0 0 0 .093.371l6.36 3.743-.063.063-2.676 2.678a.27.27 0 0 0 0 .378l5.2 5.199a.27.27 0 0 0 .378 0l8.163-8.163a.27.27 0 0 0 0-.378L12.733.772a.27.27 0 0 0-.378 0L9.679 3.448 3.319.112A.27.27 0 0 0 3.075.002zM12 7.2l4.747 4.747-4.747 4.747-4.747-4.747zm.544 12.8a.27.27 0 0 0-.166.079l-2.676 2.676a.27.27 0 0 0 0 .378l.136.136.05.05c.086.078.19.126.303.079l8.887-3.968a.27.27 0 0 0 .093-.371l-2.422-3.969-.065.063-4.14 4.14z"/></svg>
           DBLP
         </a>
-        <a href="https://www.linkedin.com/in/dr-bimal-kumar-mishra/" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-linkedin">
+        <a href="https://www.linkedin.com/in/prof-bimal-kumar-mishra-ph-d-d-sc-fras-fima-93220621/" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-linkedin">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
-        <a href="https://www.researchgate.net/profile/Bimal-Mishra-2" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-rg">
+        <a href="https://www.researchgate.net/profile/Bimal-Mishra" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-rg">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a3.193 3.193 0 0 0-.112.437 8.365 8.365 0 0 0-.078.53 9 9 0 0 0-.05.727c-.01.282-.013.621-.013 1.016a31.121 31.121 0 0 0 .014 1.017 9 9 0 0 0 .05.727 7.946 7.946 0 0 0 .078.528c.03.18.065.34.112.441.245.743.65 1.303 1.213 1.68.565.376 1.256.564 2.073.564.8 0 1.536-.213 2.105-.603.57-.39.94-.916 1.175-1.65.076-.235.135-.558.177-.93a10.9 10.9 0 0 0 .043-1.207V4.916c-.003-.282-.015-.621-.043-.93-.042-.37-.1-.695-.177-.93-.236-.734-.608-1.26-1.175-1.65C21.122.212 20.387 0 19.586 0zM5.914 7.302C2.637 7.302 0 9.974 0 13.302s2.637 6 5.914 6c2.35 0 4.348-1.37 5.31-3.356h-3.51a2.583 2.583 0 0 1-1.8.71c-1.498 0-2.582-1.158-2.582-2.792V13.3h8.058c.056-.41.085-.83.085-1.26 0-2.72-2.074-4.738-5.56-4.738z"/></svg>
           ResearchGate
-        </a>
-        <a href="https://drbimalmishra.com" target="_blank" rel="noopener noreferrer" class="hero-link" id="link-website">
-          🌐 Website
         </a>
       </nav>
     </div>
@@ -162,7 +159,7 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-label">📖 Academic Journey</span>
-        <h2 class="section-title">From BITS Pilani to VBU</h2>
+        <h2 class="section-title">From Ranchi University to VBU</h2>
         <p class="section-subtitle">Four decades of mathematical exploration, academic leadership, and intellectual innovation</p>
       </div>
       <div class="timeline" id="timeline"></div>
@@ -205,10 +202,10 @@
 
           <div class="slider-group">
             <div class="slider-label">
-              <span>τ — Immunity Duration</span>
+              <span>τ — Immunity Loss Rate</span>
               <span class="slider-value" id="tau-val">0.10</span>
             </div>
-            <input type="range" id="slider-tau" min="0" max="0.3" step="0.01" value="0.10" aria-label="Tau: immunity duration" />
+            <input type="range" id="slider-tau" min="0" max="0.3" step="0.01" value="0.10" aria-label="Tau: immunity loss rate" />
           </div>
 
           <div class="slider-group">
@@ -228,7 +225,7 @@
           </div>
 
           <p style="font-size: 0.75rem; color: var(--slate-500); margin-top: 0.5rem;">
-            Based on: <em>Chaos, Solitons &amp; Fractals</em> (2020)
+            Based on: Mishra &amp; Jha, <a href="https://doi.org/10.1016/j.apm.2009.06.011" target="_blank" rel="noopener noreferrer" style="color: var(--neon-cyan);">SEIQRS model…</a>, <em>Applied Mathematical Modelling</em> (2010)
           </p>
         </div>
       </div>
@@ -241,7 +238,7 @@
       <div class="section-header reveal">
         <span class="section-label">🛡️ Intellectual Property</span>
         <h2 class="section-title">Patents &amp; Innovations Vault</h2>
-        <p class="section-subtitle">7 granted patents across India, Australia, South Africa, and Germany</p>
+        <p class="section-subtitle">15 patents in total — 7 granted patents across India, Australia, South Africa, and Germany shown below</p>
       </div>
       <div class="patents-grid" id="patents-grid"></div>
     </div>
@@ -260,6 +257,11 @@
           <input type="search" class="pub-search-input" id="pub-search"
             placeholder="Search papers — try 'malware', 'COVID', 'DDoS', 'stenosis', 'wireless'…"
             aria-label="Search publications" autocomplete="off" />
+          <select class="pub-search-input" id="pub-sort" style="flex: none;" aria-label="Sort publications">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="cited">Most cited</option>
+          </select>
         </div>
         <div class="pub-filters" id="pub-filters" role="group" aria-label="Publication category filters"></div>
         <div class="pub-count" id="pub-count" aria-live="polite"></div>
@@ -268,7 +270,7 @@
 
       <!-- Citation Chart -->
       <div class="citation-chart-wrap reveal">
-        <canvas id="citation-chart" aria-label="Bar chart of citation trajectory from 2007 to 2026"></canvas>
+        <canvas id="citation-chart" aria-label="Bar chart of Google Scholar citations per year"></canvas>
       </div>
     </div>
   </section>
@@ -291,7 +293,7 @@
       <div class="section-header reveal">
         <span class="section-label">🎓 Mentorship Galaxy</span>
         <h2 class="section-title">Doctoral Constellation</h2>
-        <p class="section-subtitle">23 PhD scholars awarded — hover over each node to explore their research</p>
+        <p class="section-subtitle">23 PhD scholars awarded — hover or tap each node to explore their research</p>
       </div>
       <div class="constellation-canvas-wrap reveal">
         <canvas id="constellation-canvas" aria-label="Interactive galaxy showing 23 PhD scholars mentored by Prof. Mishra"></canvas>

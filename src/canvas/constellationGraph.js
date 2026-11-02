@@ -60,10 +60,16 @@ export function initConstellation(canvasId, scholars) {
     const cx = width / 2;
     const cy = height / 2;
     const maxR = Math.min(width, height) * 0.38;
+    const inner = Math.ceil(scholars.length / 2);
+    hoveredNode = null; // nodes are rebuilt below, drop the stale reference
 
     nodes = scholars.map((s, i) => {
-      const angle = (i / scholars.length) * Math.PI * 2 - Math.PI / 2;
-      const ring = i < 12 ? 0.7 : 1;
+      // two concentric rings, each spread over the full circle so nodes never bunch up
+      const onInner = i < inner;
+      const k = onInner ? i : i - inner;
+      const count = onInner ? inner : scholars.length - inner;
+      const angle = ((k + (onInner ? 0 : 0.5)) / count) * Math.PI * 2 - Math.PI / 2;
+      const ring = onInner ? 0.62 : 1;
       const r = maxR * ring;
       return {
         ...s,
@@ -87,7 +93,7 @@ export function initConstellation(canvasId, scholars) {
 
     // Subtle orbital rings
     const maxR = Math.min(width, height) * 0.38;
-    for (let ring = 0.7; ring <= 1; ring += 0.3) {
+    for (const ring of [0.62, 1]) {
       ctx.beginPath();
       ctx.arc(cx, cy, maxR * ring, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(0, 242, 254, 0.05)';
@@ -172,18 +178,20 @@ export function initConstellation(canvasId, scholars) {
     ctx.fillText('Prof. B.K. Mishra', cx, cy - 3);
     ctx.font = '8px "JetBrains Mono", monospace';
     ctx.fillStyle = 'rgba(0, 242, 254, 0.7)';
-    ctx.fillText('23 PhD Scholars', cx, cy + 10);
+    ctx.fillText(`${scholars.length} PhD Scholars`, cx, cy + 10);
 
     // Hover tooltip
     if (hoveredNode) {
       const n = hoveredNode;
-      const tw = 280;
-      const th = 70;
+      const tw = Math.min(300, width - 20);
+      ctx.font = '10px "Inter", sans-serif';
+      const thesisLines = wrapText(n.thesis, tw - 24);
+      const th = 52 + thesisLines.length * 13;
       let tx = n.x + 15;
+      if (tx + tw > width - 10) tx = n.x - tw - 15;
+      tx = Math.max(10, Math.min(tx, width - tw - 10));
       let ty = n.y - th / 2;
-      if (tx + tw > width) tx = n.x - tw - 15;
-      if (ty < 10) ty = 10;
-      if (ty + th > height - 10) ty = height - th - 10;
+      ty = Math.max(10, Math.min(ty, height - th - 10));
 
       // Tooltip background
       ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
@@ -198,17 +206,33 @@ export function initConstellation(canvasId, scholars) {
       ctx.textAlign = 'left';
       ctx.fillText(n.name, tx + 12, ty + 20);
 
-      ctx.font = '9px "Inter", sans-serif';
-      ctx.fillStyle = 'rgba(148, 163, 184, 0.8)';
-      const thesisText = n.thesis.length > 55 ? n.thesis.substring(0, 55) + '...' : n.thesis;
-      ctx.fillText(thesisText, tx + 12, ty + 36);
+      ctx.font = '10px "Inter", sans-serif';
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
+      thesisLines.forEach((line, i) => ctx.fillText(line, tx + 12, ty + 37 + i * 13));
 
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillStyle = n.color;
-      ctx.fillText(`${n.domain} • ${n.year}`, tx + 12, ty + 54);
+      ctx.fillText(`${n.domain} • ${n.year}`, tx + 12, ty + th - 12);
     }
 
     requestAnimationFrame(draw);
+  }
+
+  // Greedy word-wrap using the current ctx.font
+  function wrapText(text, maxWidth) {
+    const lines = [];
+    let line = '';
+    for (const word of text.split(' ')) {
+      const test = line ? line + ' ' + word : word;
+      if (line && ctx.measureText(test).width > maxWidth) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
   }
 
   function roundRect(ctx, x, y, w, h, r) {
@@ -225,23 +249,22 @@ export function initConstellation(canvasId, scholars) {
     ctx.closePath();
   }
 
-  canvas.addEventListener('mousemove', (e) => {
+  function pickNode(e) {
     const rect = canvas.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
-
-    hoveredNode = null;
+    const hitR = e.pointerType === 'mouse' ? 15 : 22; // fingers need a bigger target
+    let best = null, bestD = hitR;
     for (const node of nodes) {
-      const dx = mouseX - node.x;
-      const dy = mouseY - node.y;
-      if (Math.sqrt(dx * dx + dy * dy) < 15) {
-        hoveredNode = node;
-        canvas.style.cursor = 'pointer';
-        break;
-      }
+      const d = Math.hypot(mouseX - node.x, mouseY - node.y);
+      if (d < bestD) { best = node; bestD = d; }
     }
-    if (!hoveredNode) canvas.style.cursor = 'default';
-  });
+    hoveredNode = best;
+    canvas.style.cursor = best ? 'pointer' : 'default';
+  }
+
+  canvas.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') pickNode(e); });
+  canvas.addEventListener('pointerdown', pickNode);
 
   canvas.addEventListener('mouseleave', () => {
     hoveredNode = null;

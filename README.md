@@ -5,7 +5,7 @@
 ### Ultra-Interactive Academic Portfolio — *Top 1% Web Experience*
 
 [![Build](https://img.shields.io/badge/Build-Passing-00F2FE?style=flat-square&logo=vite)](https://vitejs.dev)
-[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?style=flat-square&logo=vite)](https://vitejs.dev)
+[![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat-square&logo=vite)](https://vitejs.dev)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![CSS](https://img.shields.io/badge/CSS-Vanilla-1572B6?style=flat-square&logo=css3)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![Canvas API](https://img.shields.io/badge/Canvas-HTML5-E34F26?style=flat-square&logo=html5)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
@@ -13,7 +13,7 @@
 
 > *"Politics is for the present, but an **EQUATION** is something for eternity."* — Albert Einstein
 
-**[Live Preview →](http://localhost:5173)** &nbsp;|&nbsp; **[Google Scholar →](https://scholar.google.com/citations?user=Y4hJ_dAAAAAJ)** &nbsp;|&nbsp; **[Personal Website →](https://drbimalmishra.com)**
+**[Live Site →](https://drbimalmishra.github.io/portfolio/)** &nbsp;|&nbsp; **[Google Scholar →](https://scholar.google.com/citations?user=6lukGLYAAAAJ&hl=en)** &nbsp;|&nbsp; **[ORCID →](https://orcid.org/0000-0002-7979-4995)**
 
 </div>
 
@@ -28,11 +28,11 @@
 | **Designation** | Principal, Ramgarh College, Vinoba Bhave University, Jharkhand |
 | **Former Role** | Professor & Head, Department of Applied Mathematics, BIT Mesra |
 | **Earlier Role** | Faculty, BITS Pilani |
-| **Education** | B.Sc., M.Sc. (BITS Pilani) · Ph.D. (VBU, 1997) · D.Sc. (Berhampur University, 2007) |
+| **Education** | B.Sc. (Hons.) Mathematics (Ranchi University, 1988) · M.Sc. Operational Research (University of Delhi, 1993) · M.Sc. Mathematics (VBU, 1995) · Ph.D. (VBU, 1997) · D.Sc. (Berhampur University, 2007) |
 | **Fellowships** | FRAS — Fellow, Royal Astronomical Society, London · FIMA — Fellow, IMA, UK |
-| **Citations** | 3,324+ (Google Scholar) · h-index: 26 · i10-index: 63 |
+| **Citations** | 4,580+ (Google Scholar, Nov 2026) · h-index: 32 · i10-index: 82 |
 | **Publications** | 135+ peer-reviewed papers (Elsevier, Springer, IEEE, Nature group) |
-| **Patents** | 7 granted patents — India 🇮🇳, Australia 🇦🇺 (×4), South Africa 🇿🇦, Germany 🇩🇪 |
+| **Patents** | 15 patents in total; 7 granted patents detailed on the site — India 🇮🇳, Australia 🇦🇺 (×4), South Africa 🇿🇦, Germany 🇩🇪 |
 | **PhD Scholars** | 23 awarded doctoral scholars |
 | **Books** | 5 authored/edited, including *Zero Before the Symbol* (BlueRose, 2026) |
 | **Creative** | State Karate Champion · Film Director · Playwright (30+ plays) · Poet |
@@ -48,9 +48,9 @@ A **single-page, ultra-interactive academic portfolio** showcasing Prof. Mishra'
 - 🌌 **Animated Math Particle Background** — floating differential equations with mouse-interactive particle field
 - 🧬 **Live SEIQRS Epidemic Simulator** — real 4th-order Runge-Kutta ODE solver, dual Cyber/Bio modes
 - 🎓 **PhD Scholar Galaxy** — interactive constellation of 23 doctoral scholars with orbital animations
-- 📚 **135+ Publication Database** — real-time search + category filter + DOI links
+- 📚 **Publication Database** — 115 papers from Google Scholar, real-time search + topic filter + verified DOI / Scholar links
 - 🛡️ **7-Patent Vault** — 3D perspective cards with detailed modals per patent
-- 📊 **Citation Trajectory Chart** — Canvas-rendered bar chart (2007–2026)
+- 📊 **Citation Trajectory Chart** — Canvas-rendered bar chart of Google Scholar citations per year (2003–2026)
 - 📖 **5 Book Pavilion** — 3D tilt cards with synopsis modals
 - 🥋 **Renaissance Polymath Section** — karate, cinema, drama, literature
 - 📰 **Press & Media Room** — verified Times of India, Live Hindustan coverage
@@ -62,7 +62,7 @@ A **single-page, ultra-interactive academic portfolio** showcasing Prof. Mishra'
 
 | Layer | Technology | Why |
 |---|---|---|
-| **Bundler** | [Vite 8.x](https://vitejs.dev) | Instant HMR, ESM-native, sub-second builds |
+| **Bundler** | [Vite 6.x](https://vitejs.dev) | Instant HMR, ESM-native, sub-second builds |
 | **Structure** | HTML5 (Semantic) | Single `index.html`, 11 `<section>` landmarks |
 | **Logic** | Vanilla JavaScript (ES2022) | Zero runtime overhead, maximum browser compat |
 | **Styling** | Vanilla CSS (Custom Properties) | Design tokens, glassmorphism, `backdrop-filter` |
@@ -132,8 +132,8 @@ Dad Portfolio/
 ### Installation
 
 ```bash
-# 1. Clone or navigate to the project directory
-cd "/Users/praffulmishra/Documents/Dad Portfolio"
+# 1. Clone the repository
+git clone https://github.com/drbimalmishra/portfolio.git && cd portfolio
 
 # 2. Install the single dev dependency (Vite)
 npm install
@@ -204,7 +204,7 @@ npm run preview
 
 ### SEIQRS Epidemic Simulator
 
-The simulator implements Prof. Mishra's compartmental model published in *Chaos, Solitons & Fractals* (2020):
+The simulator implements the SEIQRS model of Mishra & Jha, *Applied Mathematical Modelling* 34(3), 2010 ([doi:10.1016/j.apm.2009.06.011](https://doi.org/10.1016/j.apm.2009.06.011)):
 
 ```
 dS/dt = −βSI/N + τR      (Susceptible)
@@ -225,7 +225,7 @@ dR/dt =  γI + αQ − τR    (Recovered)
 ### PhD Scholar Galaxy
 
 An animated Canvas constellation displaying all 23 PhD scholars:
-- **Hover** over any node to reveal scholar name, thesis title, year, and research domain
+- **Hover** (desktop) or **tap** (mobile) any node to reveal scholar name, thesis title, year, and research domain
 - **Color-coded** by research domain (22 unique domains)
 - **Orbital animation** — gentle sinusoidal motion for each scholar node
 
@@ -244,8 +244,8 @@ All data has been verified through web scraping of primary sources:
 
 | Data | Source | Verified |
 |---|---|---|
-| Scholar metrics (citations, h-index) | [Google Scholar](https://scholar.google.com/citations?user=Y4hJ_dAAAAAJ) | ✅ |
-| Publications & DOIs | Google Scholar + DBLP | ✅ |
+| Scholar metrics (citations, h-index) | [Google Scholar](https://scholar.google.com/citations?user=6lukGLYAAAAJ&hl=en) | ✅ |
+| Publications & DOIs | Google Scholar + Crossref + [DBLP](https://dblp.org/pid/84/1408.html) | ✅ |
 | Indian Patent #592958 | Times of India (Jun 2026), Live Hindustan | ✅ |
 | Australian Patents | IP Australia records | ✅ |
 | South African Patent | CIPC South Africa | ✅ |
@@ -254,7 +254,6 @@ All data has been verified through web scraping of primary sources:
 | FRAS Fellowship | Royal Astronomical Society | ✅ |
 | FIMA Fellowship | Institute of Mathematics and its Applications | ✅ |
 | Lifetime Achievement Award 2025 | Live Hindustan (Jan 2026) | ✅ |
-| Institutional roles | drbimalmishra.com | ✅ |
 
 ---
 
@@ -266,11 +265,11 @@ Edit [`src/data/scholarData.js`](src/data/scholarData.js):
 
 ```javascript
 metrics: {
-  citations: 3324,   // ← Update this
-  hIndex: 26,        // ← Update this
-  i10Index: 63,      // ← Update this
+  citations: 4580,   // ← Update this
+  hIndex: 32,        // ← Update this
+  i10Index: 82,      // ← Update this
   publications: 135, // ← Update this
-  patents: 7,
+  patents: 15,
   phdsSupervised: 23,
   books: 5,
 },
@@ -282,13 +281,14 @@ Append to the `publications` array in [`src/data/publications.js`](src/data/publ
 
 ```javascript
 {
-  id: 46,                           // Next sequential ID
+  id: 116,                           // Next sequential ID
   title: 'Your Paper Title',
   journal: 'Journal Name',
   year: 2026,
-  authors: 'B.K. Mishra, Co-Author',
+  authors: 'BK Mishra, Co-Author',
   doi: '10.xxxx/xxxxx',            // Leave '' if no DOI
-  category: 'elsevier',            // 'high-impact' | 'elsevier' | 'springer' | 'conference'
+  scholarId: '6lukGLYAAAAJ:xxxx',  // Used for the Scholar link when there is no DOI
+  category: 'cyber',               // 'cyber' | 'bio' | 'biomech' | 'other'
   citations: 0,
 },
 ```
@@ -447,7 +447,7 @@ Each data file exports a plain JS object/array — completely decoupled from ren
 | Canvas `backdrop-filter` not supported in Firefox for `<canvas>` elements | Canvas uses opaque `#0B1120` background instead |
 | Clipboard API requires HTTPS in production | Works on `localhost` and any HTTPS host |
 | Google Fonts require internet connection | Add a CSS `@font-face` fallback for offline use |
-| Publication list shows ~45 of 135+ papers | Add remaining papers to `src/data/publications.js` |
+| Publication list shows the 115 Scholar papers by Prof. Mishra (the Scholar profile also auto-attaches papers by other "B. Mishra" authors) | Add papers to `src/data/publications.js` |
 
 ---
 

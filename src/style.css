@@ -187,6 +187,7 @@ button {
   z-index: 1000;
   transition: all var(--transition-medium);
   padding: 1rem 0;
+  background: linear-gradient(to bottom, rgba(7, 10, 17, 0.9), rgba(7, 10, 17, 0));
 }
 
 .navbar.scrolled {
@@ -243,6 +244,8 @@ button {
 
 .nav-ticker {
   display: flex;
+  white-space: nowrap;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono);
@@ -273,6 +276,7 @@ button {
 /* === HERO SECTION === */
 #hero {
   min-height: 100vh;
+  padding-top: 5rem; /* keep hero content clear of the fixed navbar on short screens */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -648,7 +652,7 @@ button {
 /* === SIMULATOR SECTION === */
 .simulator-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
 }
@@ -658,6 +662,7 @@ button {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  width: 100%; /* without it, aspect-ratio + min-height force a 448px min width on phones */
   aspect-ratio: 16/10;
   min-height: 280px;
 }
@@ -767,7 +772,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* === PATENT CARDS === */
 .patents-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -988,7 +993,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* === BOOKS === */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 2rem;
 }
 
@@ -1079,6 +1084,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .constellation-canvas-wrap {
+  position: relative;
   width: 100%;
   aspect-ratio: 16/9;
   min-height: 320px;
@@ -1097,7 +1103,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .constellation-info {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -1125,7 +1131,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* === RENAISSANCE (Creative) === */
 .creative-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -1195,7 +1201,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* === MEDIA MASONRY === */
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -1256,7 +1262,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* === FELLOWSHIPS === */
 .fellowships-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -1523,7 +1529,17 @@ input[type="range"]::-webkit-slider-thumb {
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
   .simulator-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* 10 links + ticker don't fit below ~1024px: switch to the hamburger menu */
+  .nav-links,
+  .nav-ticker {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
   }
   
   .timeline::before {
@@ -1546,19 +1562,13 @@ input[type="range"]::-webkit-slider-thumb {
   }
 }
 
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-  
-  .nav-hamburger {
-    display: flex;
-  }
-  
+@media (max-width: 1280px) {
   .nav-ticker {
     display: none;
   }
-  
+}
+
+@media (max-width: 768px) {
   .hero-avatar-border {
     width: 135px;
     height: 135px;
@@ -1600,6 +1610,10 @@ input[type="range"]::-webkit-slider-thumb {
   .section-title {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
   }
+
+  .constellation-canvas-wrap {
+    aspect-ratio: 1 / 1;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1635,12 +1649,14 @@ input[type="range"]::-webkit-slider-thumb {
   inset: 0;
   background: rgba(7, 10, 17, 0.95);
   backdrop-filter: blur(20px);
-  z-index: 999;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
   gap: 1.5rem;
+  padding: 4rem 0 2rem;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-medium);

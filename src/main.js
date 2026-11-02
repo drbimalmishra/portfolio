@@ -72,12 +72,14 @@ function initNavigation() {
   // Hamburger open
   hamburger.addEventListener('click', () => {
     mobileNav.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   });
 
   // Close mobile nav
   function closeMobileNav() {
     mobileNav.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
 
@@ -108,7 +110,11 @@ function initNavigation() {
 
 // ===== ROLLING COUNTERS =====
 function initCounters() {
-  const counters = document.querySelectorAll('.metric-value[data-target]');
+  const m = scholarData.metrics;
+  const navCitations = document.getElementById('nav-citations');
+  if (navCitations) navCitations.textContent = `${m.citations.toLocaleString('en-US')}+ citations`;
+  const counters = document.querySelectorAll('.metric-value[data-metric]');
+  counters.forEach(c => { c.dataset.target = m[c.dataset.metric]; });
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -132,7 +138,7 @@ function animateCounter(el, target) {
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = Math.floor(eased * target);
-    el.textContent = current.toLocaleString() + (target > 100 ? '+' : '');
+    el.textContent = current.toLocaleString('en-US') + (target > 100 ? '+' : '');
     if (progress < 1) requestAnimationFrame(update);
   }
 
@@ -143,14 +149,15 @@ function animateCounter(el, target) {
 function buildTicker() {
   const track = document.getElementById('ticker-track');
   if (!track) return;
+  const m = scholarData.metrics;
   const items = [
-    { label: 'Citations', value: '3,324+' },
-    { label: 'Publications', value: '135+' },
-    { label: 'Global Patents', value: '7' },
-    { label: 'PhDs Mentored', value: '23' },
-    { label: 'h-index', value: '26' },
-    { label: 'i10-index', value: '63' },
-    { label: 'Books', value: '5' },
+    { label: 'Citations', value: `${m.citations.toLocaleString('en-US')}+` },
+    { label: 'Publications', value: `${m.publications}+` },
+    { label: 'Global Patents', value: m.patents },
+    { label: 'PhDs Mentored', value: m.phdsSupervised },
+    { label: 'h-index', value: m.hIndex },
+    { label: 'i10-index', value: m.i10Index },
+    { label: 'Books', value: m.books },
     { label: 'Conference Papers', value: '33' },
     { label: 'Countries Patented', value: '4' },
     { label: 'Years in Academia', value: '30+' },
@@ -169,7 +176,9 @@ function buildTimeline() {
   const timeline = document.getElementById('timeline');
   if (!timeline) return;
   const milestones = [
-    { year: '1980s', title: 'BITS Pilani', desc: 'B.Sc. and M.Sc. in Mathematics from one of India\'s premier institutions. Beginning of a lifelong love for equations.' },
+    { year: '1985–1988', title: 'B.Sc. (Hons.) Mathematics — Ranchi University', desc: 'Undergraduate honours in Mathematics. Beginning of a lifelong love for equations.' },
+    { year: '1991–1993', title: 'M.Sc. Operational Research — University of Delhi', desc: 'Postgraduate training in operational research, optimization and decision science.' },
+    { year: '1995', title: 'M.Sc. Mathematics — Vinoba Bhave University', desc: 'Second master\'s degree, in Mathematics.' },
     { year: '1997', title: 'Ph.D. — Vinoba Bhave University', desc: 'Doctoral research in Applied Mathematics, laying the foundation for mathematical modeling of complex dynamical systems.' },
     { year: '2000s', title: 'Faculty, BITS Pilani', desc: 'Teaching and research at BITS Pilani, mentoring the next generation of mathematicians and engineers.' },
     { year: '2007', title: 'D.Sc. — Berhampur University', desc: 'Doctor of Science degree recognizing distinguished contributions to mathematical modeling and nonlinear dynamics.' },
@@ -242,15 +251,18 @@ function buildPublications() {
   const list = document.getElementById('pub-list');
   const count = document.getElementById('pub-count');
   const search = document.getElementById('pub-search');
-  if (!filters || !list || !count || !search) return;
+  const sort = document.getElementById('pub-sort');
+  if (!filters || !list || !count || !search || !sort) return;
 
   let activeFilter = 'all';
 
   // Build filter buttons
   publicationCategories.forEach(cat => {
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = `pub-filter-btn ${cat.key === 'all' ? 'active' : ''}`;
-    btn.textContent = cat.label + (cat.count ? ` (${cat.count})` : '');
+    const n = cat.key === 'all' ? publications.length : publications.filter(p => p.category === cat.key).length;
+    btn.textContent = `${cat.label} (${n})`;
     btn.addEventListener('click', () => {
       activeFilter = cat.key;
       filters.querySelectorAll('.pub-filter-btn').forEach(b => b.classList.remove('active'));
@@ -276,18 +288,23 @@ function buildPublications() {
       );
     }
 
-    // Sort by year desc
-    filtered.sort((a, b) => b.year - a.year);
+    // Undated papers always go last; ties fall back to most cited
+    const byYear = (a, b) => (b.year || 0) - (a.year || 0);
+    if (sort.value === 'cited') filtered.sort((a, b) => b.citations - a.citations || byYear(a, b));
+    else if (sort.value === 'oldest') filtered.sort((a, b) => (a.year || 9999) - (b.year || 9999) || b.citations - a.citations);
+    else filtered.sort((a, b) => byYear(a, b) || b.citations - a.citations);
 
-    count.textContent = `Showing ${filtered.length} of 135+ publications`;
+    count.textContent = `Showing ${filtered.length} of ${publications.length} papers listed on Google Scholar`;
 
     list.innerHTML = filtered.length ? filtered.map(p => `
       <div class="pub-item">
-        <span class="pub-year">${p.year}</span>
+        <span class="pub-year">${p.year || '—'}</span>
         <div class="pub-info">
           <div class="pub-title">${p.title}</div>
-          <div class="pub-journal">${p.journal}${p.authors ? ' · ' + p.authors : ''}</div>
-          ${p.doi ? `<a href="https://doi.org/${p.doi}" target="_blank" rel="noopener" class="pub-doi">DOI ↗</a>` : ''}
+          <div class="pub-journal">${p.journal ? p.journal + ' · ' : ''}${p.authors}${p.citations ? ` · Cited by ${p.citations}` : ''}</div>
+          ${p.doi
+            ? `<a href="https://doi.org/${p.doi}" target="_blank" rel="noopener noreferrer" class="pub-doi">DOI ↗</a>`
+            : `<a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=${scholarData.scholarId}&citation_for_view=${p.scholarId}" target="_blank" rel="noopener noreferrer" class="pub-doi">Google Scholar ↗</a>`}
         </div>
       </div>
     `).join('') : '<p style="color:var(--slate-500); text-align:center; padding:2rem 0;">No papers match your search.</p>';
@@ -300,6 +317,7 @@ function buildPublications() {
     timeout = setTimeout(renderPubs, 200);
   });
 
+  sort.addEventListener('change', renderPubs);
   renderPubs();
 }
 
@@ -332,7 +350,7 @@ function buildCitationChart() {
     ctx.font = 'bold 12px "Inter", sans-serif';
     ctx.fillStyle = '#F8FAFC';
     ctx.textAlign = 'left';
-    ctx.fillText('Citation Trajectory (2007–2026)', pad.left, 18);
+    ctx.fillText(`Citations per Year (${data[0].year}–${data[data.length - 1].year})`, pad.left, 18);
 
     // Grid lines
     for (let i = 0; i <= 4; i++) {
@@ -451,7 +469,7 @@ function buildBooks() {
           ${b.publisher ? b.publisher + ' · ' : ''}${b.year}${b.isbn ? ' · ISBN: ' + b.isbn : ''}
         </p>
         <p style="color: var(--slate-300); line-height: 1.75; font-size: 0.95rem;">${b.description}</p>
-        ${b.buyLink ? `<div style="margin-top:1.5rem; text-align:center;"><a href="${b.buyLink}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.7rem 1.4rem; background:var(--neon-cyan); color:var(--obsidian); border-radius:999px; font-weight:700; font-size:0.85rem;">Get this Book ↗</a></div>` : ''}
+        ${b.buyLink ? `<div style="margin-top:1.5rem; text-align:center;"><a href="${b.buyLink}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.7rem 1.4rem; background:var(--neon-cyan); color:var(--obsidian); border-radius:999px; font-weight:700; font-size:0.85rem;">Get this Book ↗</a></div>` : ''}
       `);
     });
   });
@@ -462,9 +480,10 @@ function buildConstellationInfo() {
   const info = document.getElementById('constellation-info');
   if (!info) return;
   const domains = [...new Set(phdScholars.map(s => s.domain))];
+  const years = phdScholars.map(s => s.year);
   info.innerHTML = `
     <div class="constellation-stat">
-      <div class="constellation-stat-value">23</div>
+      <div class="constellation-stat-value">${phdScholars.length}</div>
       <div class="constellation-stat-label">PhD Scholars Awarded</div>
     </div>
     <div class="constellation-stat">
@@ -472,7 +491,7 @@ function buildConstellationInfo() {
       <div class="constellation-stat-label">Research Domains</div>
     </div>
     <div class="constellation-stat">
-      <div class="constellation-stat-value">2009–2023</div>
+      <div class="constellation-stat-value">${Math.min(...years)}–${Math.max(...years)}</div>
       <div class="constellation-stat-label">Mentorship Span</div>
     </div>
     <div class="constellation-stat">
@@ -536,12 +555,11 @@ function buildConnectTerminal() {
 
   const lines = [
     { key: 'ORCID', value: '0000-0002-7979-4995', link: 'https://orcid.org/0000-0002-7979-4995', copy: '0000-0002-7979-4995' },
-    { key: 'Scholar', value: 'Y4hJ_dAAAAAJ', link: 'https://scholar.google.com/citations?user=Y4hJ_dAAAAAJ', copy: 'https://scholar.google.com/citations?user=Y4hJ_dAAAAAJ' },
-    { key: 'DBLP', value: 'pid/50/5053', link: 'https://dblp.org/pid/50/5053', copy: 'https://dblp.org/pid/50/5053' },
-    { key: 'LinkedIn', value: 'dr-bimal-kumar-mishra', link: 'https://www.linkedin.com/in/dr-bimal-kumar-mishra/', copy: 'https://www.linkedin.com/in/dr-bimal-kumar-mishra/' },
-    { key: 'ResearchGate', value: 'Bimal-Mishra-2', link: 'https://www.researchgate.net/profile/Bimal-Mishra-2', copy: 'https://www.researchgate.net/profile/Bimal-Mishra-2' },
+    { key: 'Scholar', value: scholarData.scholarId, link: scholarData.links.scholar, copy: scholarData.links.scholar },
+    { key: 'DBLP', value: 'pid/84/1408', link: scholarData.links.dblp, copy: scholarData.links.dblp },
+    { key: 'ResearchGate', value: 'Bimal-Mishra', link: 'https://www.researchgate.net/profile/Bimal-Mishra', copy: 'https://www.researchgate.net/profile/Bimal-Mishra' },
+    { key: 'LinkedIn', value: 'prof-bimal-kumar-mishra', link: 'https://www.linkedin.com/in/prof-bimal-kumar-mishra-ph-d-d-sc-fras-fima-93220621/', copy: 'https://www.linkedin.com/in/prof-bimal-kumar-mishra-ph-d-d-sc-fras-fima-93220621/' },
     { key: 'Email', value: 'drbimalmishra@gmail.com', link: 'mailto:drbimalmishra@gmail.com', copy: 'drbimalmishra@gmail.com' },
-    { key: 'Website', value: 'drbimalmishra.com', link: 'https://drbimalmishra.com', copy: 'https://drbimalmishra.com' },
   ];
 
   terminal.innerHTML = `
@@ -556,8 +574,8 @@ function buildConnectTerminal() {
         <div class="terminal-line">
           <span class="terminal-prompt">▸</span>
           <span class="terminal-key">${l.key}:</span>
-          <span class="terminal-val"><a href="${l.link}" target="_blank" rel="noopener">${l.value}</a></span>
-          <button class="copy-btn" id="copy-btn-${i}" data-copy="${l.copy}">copy</button>
+          <span class="terminal-val"><a href="${l.link}" target="_blank" rel="noopener noreferrer">${l.value}</a></span>
+          <button type="button" class="copy-btn" id="copy-btn-${i}" data-copy="${l.copy}">copy</button>
         </div>
       `).join('')}
     </div>
@@ -567,7 +585,8 @@ function buildConnectTerminal() {
   terminal.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const text = btn.dataset.copy;
-      navigator.clipboard.writeText(text).then(() => {
+      const write = navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject(new Error('Clipboard unavailable'));
+      write.then(() => {
         btn.textContent = '✓ copied';
         btn.classList.add('copied');
         setTimeout(() => {
@@ -589,42 +608,45 @@ function initModal() {
   const close = document.getElementById('modal-close');
   if (!overlay || !close) return;
 
-  close.addEventListener('click', () => overlay.classList.remove('active'));
+  function closeModal() {
+    if (!overlay.classList.contains('active')) return;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    lastFocus?.focus();
+  }
+
+  close.addEventListener('click', closeModal);
   overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('active');
+    if (e.target === overlay) closeModal();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') overlay.classList.remove('active');
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Patent and book cards open the modal: make them reachable by keyboard too
+  document.querySelectorAll('.patent-card, .book-card').forEach(card => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
   });
 }
+
+let lastFocus = null;
 
 function showModal(html) {
   const body = document.getElementById('modal-body');
   const overlay = document.getElementById('modal-overlay');
   if (!body || !overlay) return;
+  lastFocus = document.activeElement;
   body.innerHTML = html;
   overlay.classList.add('active');
   // Prevent body scroll when modal is open
   document.body.style.overflow = 'hidden';
-  overlay.addEventListener('transitionend', () => {}, { once: true });
+  document.getElementById('modal-close')?.focus();
 }
 
-// Hook modal close to restore scroll
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay = document.getElementById('modal-overlay');
-  if (overlay) {
-    const restoreScroll = () => {
-      if (!overlay.classList.contains('active')) {
-        document.body.style.overflow = '';
-      }
-    };
-    const closeBtn = document.getElementById('modal-close');
-    closeBtn?.addEventListener('click', restoreScroll);
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) restoreScroll();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') restoreScroll();
-    });
-  }
-});
